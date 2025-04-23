@@ -81,7 +81,6 @@ function addProduct() {
     });
 }
 
-
 function clearInputs() {
     document.getElementById("productName").value = "";
     document.getElementById("productPrice").value = "";
@@ -166,7 +165,6 @@ function addBalance() {
     });
 }
 
-
 function updateBalanceDisplay() {
     const balanceDisplay = document.getElementById("balanceDisplay");
     if (balanceDisplay) {
@@ -228,6 +226,16 @@ function downloadPDF() {
     doc.save("Hisab_Kitab_Report.pdf");
 }
 
-
-
 displayPurchaseHistory();
+
+// Event listener for Total button
+document.getElementById("totalBtn")?.addEventListener("click", () => {
+    const total = purchaseHistory.reduce((sum, item) => sum + parseFloat(item.price || 0), 0);
+    Swal.fire({
+        title: "Total Purchase",
+        text: `Your total purchase amount is ₹${total.toFixed(2)}`,
+        icon: "info",
+        confirmButtonText: "OK"
+    });
+});
+
