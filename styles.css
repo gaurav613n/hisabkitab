@@ -1,162 +1,197 @@
-/* Futuristic and Professional Styling for Hisab Kitab */
-
-
+/* Hisab Kitab – Responsive & Animated UI */
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: #f0f4f8;
-    color: #333;
-    padding: 20px;
-    margin: 0;
-    box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 1rem;
+  color: #333;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
-
 
 .container {
-    max-width: 700px;
-    margin: auto;
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+  max-width: 700px;
+  margin: auto;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  animation: fadeIn 0.6s ease-in-out;
 }
 
-h1, h2 {
-    text-align: center;
-    color: #222;
-    margin-bottom: 20px;
+.top-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+  animation: slideDown 0.7s ease;
 }
 
-.input-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-input[type="text"], input[type="number"] {
-    flex: 1 1 48%;
-    padding: 12px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    transition: all 0.3s ease;
-    background-color: #fdfdfd;
-}
-
-input:focus {
-    border-color: #007acc;
-    box-shadow: 0 0 10px #007acc;
-    outline: none;
-    transform: scale(1.02);
-}
-
-button {
-    padding: 12px;
-    font-size: 16px;
-    border: none;
-    border-radius: 6px;
-    background: linear-gradient(135deg, #28a745, #218838);
-    color: white;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    margin-bottom: 8px;
-}
-
-button::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 300%;
-    height: 300%;
-    background: radial-gradient(circle, rgba(255,255,255,0.2), transparent);
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform 0.5s ease;
-    z-index: 0;
-}
-
-button:hover::before {
-    transform: translate(-50%, -50%) scale(1);
-}
-
-button:hover {
-    transform: scale(1.02);
-    background: linear-gradient(135deg, #218838, #1e7e34);
-}
-
-button:active {
-    transform: scale(0.98);
-    box-shadow: 0 0 15px rgba(40, 167, 69, 0.5);
+.top-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #2c3e50;
 }
 
 #balanceDisplay {
-    font-weight: bold;
-    color: #222;
-    background-color: #e0f7ff;
-    padding: 6px 12px;
-    border-radius: 8px;
-    box-shadow: 0 0 6px rgba(0,0,0,0.1);
-    text-align: right;
-    margin-bottom: 10px;
-    display: block;
-    font-size: 18px;
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #007acc;
+  background-color: #e0f7ff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
+.input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+  animation: fadeInUp 0.5s ease;
+}
+
+input[type="text"],
+input[type="number"] {
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  transition: 0.3s;
+}
+
+input:focus {
+  border-color: #5cb85c;
+  outline: none;
+  box-shadow: 0 0 10px rgba(92, 184, 92, 0.2);
+  transform: scale(1.02);
+}
+
+button {
+  padding: 14px;
+  font-size: 1rem;
+  background: linear-gradient(135deg, #28a745, #218838);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  transform: scale(1.03);
+  background: linear-gradient(135deg, #218838, #1e7e34);
+}
+
+button:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 8px rgba(40, 167, 69, 0.4);
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 1.5rem;
+}
+
+h2 {
+  font-size: 1.3rem;
+  margin: 1rem 0 0.5rem;
+  text-align: center;
+  color: #2c3e50;
+  animation: fadeIn 0.5s ease;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  animation: fadeInUp 0.5s ease-in-out;
+}
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-    color: #333;
-    margin-bottom: 20px;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  background-color: #fff;
 }
 
-table th, table td {
-    border: 1px solid #ccc;
-    padding: 12px;
-    text-align: left;
-    font-size: 14px;
+thead {
+  background-color: #f0f0f0;
+}
+
+th, td {
+  padding: 12px;
+  border: 1px solid #ccc;
+  text-align: left;
 }
 
 th {
-    background-color: #f0f0f0;
-    color: #007acc;
-    text-transform: uppercase;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #007acc;
 }
 
 #purchaseHistory tbody tr {
-    animation: fadeInUp 0.6s ease-in-out;
+  animation: fadeInUp 0.4s ease-in-out;
+  transition: background 0.2s;
+}
+
+#purchaseHistory tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-20px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
-    .input-section {
-        flex-direction: column;
-    }
+@media (min-width: 768px) {
+  .top-header {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
-    input[type="text"], input[type="number"] {
-        width: 100%;
-    }
+  .input-section {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 
-    button {
-        width: 100%;
-    }
+  input[type="text"],
+  input[type="number"] {
+    flex: 1;
+  }
+
+  button {
+    width: auto;
+    padding: 12px 24px;
+  }
+
+  .action-buttons {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .action-buttons button {
+    flex: 1 1 48%;
+  }
 }
-
