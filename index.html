@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hisab Kitab</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+  
+</head>
+<body>
+      <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1>Accounting Software</h1>
+            <span id="balanceDisplay">Balance: ₹0.00</span>
+           <!-- <button id="reloadButton" class="reload-btn" onclick="reloadPage()" title="Reload">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
+                </svg>
+            </button>-->
+        </div>
+
+        <div class="input-section">
+            <input type="text" id="productName" placeholder="Product Name" />
+            <input type="number" id="productPrice" placeholder="Product Price" />
+            <button onclick="addProduct()">Add Product</button>
+        </div>
+
+        <h2>Product Purchase History</h2>
+        <table id="purchaseHistory">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Purchase history rows will be added here -->
+            </tbody>
+        </table>
+
+        <button id="totalAmount">Total: $0.00</button>
+        <button onclick="deleteAll()" class="delete-btn">Delete All</button>
+        <button onclick="deleteBalance()">Delete Balance</button>
+        <button onclick="addBalance()">Add Balance</button>
+        <button onclick="downloadPDF()">Download PDF</button>
+    </div>
+
+   
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    
+    <script src="script.js"></script>
+
+</body>
+</html>
