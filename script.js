@@ -239,3 +239,12 @@ document.getElementById("totalBtn")?.addEventListener("click", () => {
     });
 });
 
+window.addEventListener("DOMContentLoaded", () => {
+    Swal.fire({
+        title: "Welcome to Hisab Kitab!",
+        text: "Track your expenses smartly 💰",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false
+    });
+});
