@@ -252,3 +252,32 @@ window.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("welcomeShown", "true");
     }
 });
+
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js').then(reg => {
+      reg.onupdatefound = () => {
+        const newWorker = reg.installing;
+        newWorker.onstatechange = () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            // New version available
+            console.log('New version available! Reloading...');
+            // Optionally show a popup or reload automatically
+            window.location.reload();
+          }
+        };
+      };
+    });
+  }
+  Swal.fire({
+    title: "Update Available!",
+    text: "A new version of the app is available. Reload to update?",
+    icon: "info",
+    showCancelButton: true,
+    confirmButtonText: "Reload",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.location.reload();
+    }
+  });
+  
