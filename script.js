@@ -240,11 +240,15 @@ document.getElementById("totalBtn")?.addEventListener("click", () => {
 });
 
 window.addEventListener("DOMContentLoaded", () => {
-    Swal.fire({
-        title: "Welcome to Hisab Kitab!",
-        text: "Track your expenses smartly 💰",
-        icon: "success",
-        timer: 2000,
-        showConfirmButton: false
-    });
+    if (!localStorage.getItem("welcomeShown")) {
+        Swal.fire({
+            title: "Welcome to Hisab Kitab!",
+            text: "Track your expenses smartly 💰",
+            icon: "success",
+            timer: 2500,
+            showConfirmButton: false
+        });
+        playSound("add");
+        localStorage.setItem("welcomeShown", "true");
+    }
 });
