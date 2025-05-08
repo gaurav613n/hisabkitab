@@ -19,9 +19,14 @@
       .then(() => console.log('Service Worker registered'));
   }
 </script>
-
 </head>
 <body>
+  <!-- Theme toggle button -->
+  <div class="theme-container">
+    <div class="theme-switch" id="themeSwitch" aria-label="Toggle dark mode">
+      <span class="theme-label"></span>
+    </div>
+  </div>
   <div class="container">
     <header class="top-header">
       <h1>Hisab Kitab</h1>
@@ -31,7 +36,9 @@
     <section class="input-section">
       <input type="text" id="productName" placeholder="Product Name" />
       <input type="number" id="productPrice" placeholder="Product Price" />
-      <button onclick="addProduct()">Add Product</button>
+      <button onclick="addProduct()">
+        <span>Add Product</span>
+      </button>
     </section>
 
     <h2>Product Purchase History</h2>
@@ -41,6 +48,7 @@
           <tr>
             <th>Product Name</th>
             <th>Price</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -48,23 +56,103 @@
     </div>
 
     <div class="action-buttons">
-      <button id="totalBtn">Total</button>
-      <button onclick="deleteAll()" class="delete-btn">Delete All</button>
-      <button onclick="deleteBalance()">Delete Balance</button>
-      <button onclick="addBalance()">Add Balance</button>
-      <button onclick="downloadPDF()">Download PDF</button>
+      <button id="totalBtn">
+        <span>Total</span>
+      </button>
+      <button onclick="deleteAll()" class="delete-btn">
+        <span>Delete All</span>
+      </button>
+      <button onclick="deleteBalance()">
+        <span>Delete Balance</span>
+      </button>
+      <button onclick="addBalance()">
+        <span>Add Balance</span>
+      </button>
+      <button onclick="downloadPDF()">
+        <span>Download PDF</span>
+      </button>
     </div>
   </div>
+
+ <!---  Floating action button for quick add 
+  <div class="floating-button" id="quickAddButton">+</div>
+
+   Toast notification container 
+  <div id="toastContainer"></div>-->
 
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
   <script src="script.js"></script>
+  
+  <!-- Add this to script.js or inline here -->
   <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('Service Worker registered'));
+    // Theme Toggle Functionality
+    const themeSwitch = document.getElementById('themeSwitch');
+    themeSwitch.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    });
+
+    // Check for saved theme preference
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark-mode');
     }
+
+    // Quick Add Button
+    const quickAddButton = document.getElementById('quickAddButton');
+    quickAddButton.addEventListener('click', () => {
+      document.getElementById('productName').focus();
+      
+      // Scroll to input section
+      const inputSection = document.querySelector('.input-section');
+      inputSection.scrollIntoView({ behavior: 'smooth' });
+      
+      // Highlight the input section
+      inputSection.classList.add('highlight');
+      setTimeout(() => {
+        inputSection.classList.remove('highlight');
+      }, 1000);
+    });
+
+    // Toast Notification Function
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `toast-notification ${type}`;
+      toast.innerText = message;
+      
+      document.getElementById('toastContainer').appendChild(toast);
+      
+      // Remove toast after 3 seconds
+      setTimeout(() => {
+        toast.remove();
+      }, 3000);
+    }
+
+    // Enhance existing functionality with new animations
+    const originalAddProduct = window.addProduct;
+    window.addProduct = function() {
+      const result = originalAddProduct.apply(this, arguments);
+      if (document.getElementById('productName').value.trim() !== '' && !isNaN(parseFloat(document.getElementById('productPrice').value))) {
+        showToast('Product added successfully!');
+      }
+      return result;
+    };
+
+    const originalAddBalance = window.addBalance;
+    window.addBalance = function() {
+      const result = originalAddBalance.apply(this, arguments);
+      // The balance display gets updated in the original function
+      // Just add animation to the balance display
+      const balanceDisplay = document.getElementById('balanceDisplay');
+      balanceDisplay.classList.add('balance-updated');
+      setTimeout(() => {
+        balanceDisplay.classList.remove('balance-updated');
+      }, 600);
+      return result;
+    };
   </script>
+  
+
 </body>
 </html>

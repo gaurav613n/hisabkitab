@@ -254,3 +254,63 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 
+// Enhanced Theme Toggle Functionality
+const themeSwitch = document.getElementById('themeSwitch');
+const themeLabel = document.querySelector('.theme-label');
+
+// Initialize theme on page load
+function initTheme() {
+  // Check for saved theme preference
+  if (localStorage.getItem('darkMode') === 'true') {
+    document.body.classList.add('dark-mode');
+    if (themeLabel) themeLabel.textContent = 'Light';
+  } else {
+    if (themeLabel) themeLabel.textContent = 'dark';
+  }
+  
+  // Show brief indicator to users about the theme toggle
+  showThemeToast();
+}
+
+// Toggle theme function
+function toggleTheme() {
+  document.body.classList.toggle('dark-mode');
+  const isDarkMode = document.body.classList.contains('dark-mode');
+  localStorage.setItem('darkMode', isDarkMode);
+  
+  // Update label text
+  if (themeLabel) {
+    themeLabel.textContent = isDarkMode ? '' : '';
+  }
+  
+  // Show confirmation toast
+  showToast(isDarkMode ? 'Dark mode enabled!' : 'Light mode enabled!');
+}
+
+// Show a toast notification about the theme toggle button
+function showThemeToast() {
+  // Only show this toast once per session
+  if (!sessionStorage.getItem('themeToastShown')) {
+    setTimeout(() => {
+      showToast('Tap the mode button to toggle theme!', 'info');
+      sessionStorage.setItem('themeToastShown', 'true');
+    }, 3000);
+  }
+}
+
+// Add event listener
+if (themeSwitch) {
+  themeSwitch.addEventListener('click', toggleTheme);
+  
+  // Add mobile-specific events
+  themeSwitch.addEventListener('touchstart', function() {
+    this.classList.add('active');
+  });
+  
+  themeSwitch.addEventListener('touchend', function() {
+    this.classList.remove('active');
+  });
+}
+
+// Initialize theme when DOM is loaded
+document.addEventListener('DOMContentLoaded', initTheme);
