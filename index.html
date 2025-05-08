@@ -13,6 +13,10 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <link rel="manifest" href="manifest.json">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js')
@@ -65,6 +69,29 @@
       navigator.serviceWorker.register('service-worker.js')
         .then(() => console.log('Service Worker registered'));
     }
+  </script>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyC9ZkdtxvS7eqOTUO8lOrmIoonzX35ohv4",
+      authDomain: "hisab-kitab-a1c16.firebaseapp.com",
+      projectId: "hisab-kitab-a1c16",
+      storageBucket: "hisab-kitab-a1c16.firebasestorage.app",
+      messagingSenderId: "777808995938",
+      appId: "1:777808995938:web:3c6cd0a6a71ee17d6d133b",
+      measurementId: "G-RG3VNTEZVB"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
   </script>
 </body>
 </html>
