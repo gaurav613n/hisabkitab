@@ -1,163 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#5cb85c" />
-  <title>Hisab Kitab</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Problem Page</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  <link rel="manifest" href="manifest.json">
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(() => console.log('Service Worker registered'));
-  }
-</script>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+
+    header {
+      background-color: #2d3a5a;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav ul {
+      list-style-type: none;
+    }
+
+    nav ul li {
+      display: inline;
+      margin-right: 20px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    #problem-section {
+      padding: 50px;
+      text-align: center;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .problem-content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    #animate-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #2d3a5a;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    #animation-container {
+      width: 100%;
+      height: 200px;
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px dashed #2d3a5a;
+      border-radius: 10px;
+      visibility: hidden;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      background-color: #2d3a5a;
+      color: white;
+      padding: 20px;
+    }
+
+    footer .contact a {
+      color: #ffb84d;
+      text-decoration: none;
+    }
+
+    footer .contact a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      nav ul {
+        text-align: center;
+      }
+
+      nav ul li {
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      #problem-section {
+        padding: 30px;
+      }
+    }
+
+    /* Spinner animation */
+    .spinner {
+      border: 16px solid #f3f3f3;
+      border-top: 16px solid #3498db;
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading {
+      font-size: 18px;
+      color: #2d3a5a;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <!-- Theme toggle button -->
-  <div class="theme-container">
-    <div class="theme-switch" id="themeSwitch" aria-label="Toggle dark mode">
-      <span class="theme-label"></span>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Problems</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="problem-section">
+    <div class="problem-content">
+      <h1>Problem: Something Went Wrong!</h1>
+      <p>We encountered an issue with the system. Please stay tuned for updates.</p>
+      <button id="animate-btn">Fix Issue</button>
     </div>
-  </div>
-  <div class="container">
-    <header class="top-header">
-      <h1>Hisab Kitab</h1>
-      <span id="balanceDisplay">Balance: ₹0.00</span>
-    </header>
-
-    <section class="input-section">
-      <input type="text" id="productName" placeholder="Product Name" />
-      <input type="number" id="productPrice" placeholder="Product Price" />
-      <button onclick="addProduct()">
-        <span>Add Product</span>
-      </button>
-    </section>
-
-    <h2>Product Purchase History</h2>
-    <div class="table-wrapper">
-      <table id="purchaseHistory">
-        <thead>
-          <tr>
-            <th>Product Name</th>
-            <th>Price</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+    <div id="animation-container">
+      <!-- Animation area -->
     </div>
+  </section>
 
-    <div class="action-buttons">
-      <button id="totalBtn">
-        <span>Total</span>
-      </button>
-      <button onclick="deleteAll()" class="delete-btn">
-        <span>Delete All</span>
-      </button>
-      <button onclick="deleteBalance()">
-        <span>Delete Balance</span>
-      </button>
-      <button onclick="addBalance()">
-        <span>Add Balance</span>
-      </button>
-      <button onclick="downloadPDF()">
-        <span>Download PDF</span>
-      </button>
+  <footer>
+    <div class="contact">
+      <h2>If you are the owner, please contact us</h2>
+      <p>For more information, reach us at <a href="mailto:support@yourapp.com">support@yourapp.com</a></p>
     </div>
-  </div>
+  </footer>
 
- <!---  Floating action button for quick add 
-  <div class="floating-button" id="quickAddButton">+</div>
-
-   Toast notification container 
-  <div id="toastContainer"></div>-->
-
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-  <script src="script.js"></script>
-  
-  <!-- Add this to script.js or inline here -->
   <script>
-    // Theme Toggle Functionality
-    const themeSwitch = document.getElementById('themeSwitch');
-    themeSwitch.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-    });
+    document.getElementById("animate-btn").addEventListener("click", function() {
+      const animationContainer = document.getElementById("animation-container");
+      animationContainer.style.visibility = "visible";
+      animationContainer.innerHTML = "<div class='loading'>Fixing the issue...</div>";
 
-    // Check for saved theme preference
-    if (localStorage.getItem('darkMode') === 'true') {
-      document.body.classList.add('dark-mode');
-    }
+      // Animation effect (loading spinner)
+      let spinner = document.createElement("div");
+      spinner.className = "spinner";
+      animationContainer.appendChild(spinner);
 
-    // Quick Add Button
-    const quickAddButton = document.getElementById('quickAddButton');
-    quickAddButton.addEventListener('click', () => {
-      document.getElementById('productName').focus();
-      
-      // Scroll to input section
-      const inputSection = document.querySelector('.input-section');
-      inputSection.scrollIntoView({ behavior: 'smooth' });
-      
-      // Highlight the input section
-      inputSection.classList.add('highlight');
       setTimeout(() => {
-        inputSection.classList.remove('highlight');
-      }, 1000);
-    });
-
-    // Toast Notification Function
-    function showToast(message, type = 'success') {
-      const toast = document.createElement('div');
-      toast.className = `toast-notification ${type}`;
-      toast.innerText = message;
-      
-      document.getElementById('toastContainer').appendChild(toast);
-      
-      // Remove toast after 3 seconds
-      setTimeout(() => {
-        toast.remove();
+        animationContainer.innerHTML = "<h3>Issue fixed successfully!</h3>";
       }, 3000);
-    }
-
-    // Enhance existing functionality with new animations
-    const originalAddProduct = window.addProduct;
-    window.addProduct = function() {
-      const result = originalAddProduct.apply(this, arguments);
-      if (document.getElementById('productName').value.trim() !== '' && !isNaN(parseFloat(document.getElementById('productPrice').value))) {
-        showToast('Product added successfully!');
-      }
-      return result;
-    };
-
-    const originalAddBalance = window.addBalance;
-    window.addBalance = function() {
-      const result = originalAddBalance.apply(this, arguments);
-      // The balance display gets updated in the original function
-      // Just add animation to the balance display
-      const balanceDisplay = document.getElementById('balanceDisplay');
-      balanceDisplay.classList.add('balance-updated');
-      setTimeout(() => {
-        balanceDisplay.classList.remove('balance-updated');
-      }, 600);
-      return result;
-    };
+    });
   </script>
-  
-
-  
 </body>
 </html>
