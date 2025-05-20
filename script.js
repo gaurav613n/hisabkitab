@@ -4,15 +4,55 @@ const purchaseHistory = JSON.parse(localStorage.getItem("purchaseHistory")) || [
 let totalBalance = parseFloat(localStorage.getItem("totalBalance")) || 0;
 const balanceHistory = JSON.parse(localStorage.getItem("balanceHistory")) || [];
 
-const sounds = {
-    add: new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_c40109f6dc.mp3?filename=success-1-6297.mp3"),
-    delete: new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_7efc0ec12b.mp3?filename=interface-click-124494.mp3"),
-    alert: new Audio("https://cdn.pixabay.com/download/audio/2021/09/14/audio_4d5f354fcb.mp3?filename=error-126627.mp3")
+// Sound utility functions
+const createAudio = (url) => {
+    const audio = new Audio(url);
+    audio.load(); // Preload the audio
+    return audio;
 };
 
+const sounds = {
+    // Using GitHub-compatible CDN URLs for sounds <mcreference link="https://github.com/orgs/community/discussions/22174" index="1">1</mcreference>
+    add: createAudio('https://cdn.jsdelivr.net/gh/freeCodeCamp/cdn/build/testable-projects-fcc/audio/BeepSound.wav'),
+    delete: createAudio('https://cdn.jsdelivr.net/gh/freeCodeCamp/cdn/build/testable-projects-fcc/audio/shrink-ray.mp3'),
+    alert: createAudio('https://cdn.jsdelivr.net/gh/freeCodeCamp/cdn/build/testable-projects-fcc/audio/warning-sound.mp3'),
+    total: createAudio('https://cdn.jsdelivr.net/gh/freeCodeCamp/cdn/build/testable-projects-fcc/audio/click-sound.mp3'),
+    pdf: createAudio('https://cdn.jsdelivr.net/gh/freeCodeCamp/cdn/build/testable-projects-fcc/audio/success-sound.mp3'),
+    click: createAudio('https://cdn.jsdelivr.net/gh/freeCodeCamp/cdn/build/testable-projects-fcc/audio/button-click.mp3')
+};
+
+// Enhanced playSound function with error handling
 function playSound(type) {
-    if (sounds[type]) sounds[type].play();
+    if (!sounds[type]) return; // Guard clause for non-existent sounds
+    
+    sounds[type].play().catch(error => {
+        console.warn(`Failed to play ${type} sound:`, error);
+        // Create a new instance and try again
+        sounds[type].load();
+    });
 }
+
+// Initialize sound settings
+Object.values(sounds).forEach(sound => {
+    sound.volume = 0.3; // Set volume to 30%
+    
+    // Add error handling for loading
+    sound.addEventListener('error', (e) => {
+        console.warn('Error loading sound:', e);
+    });
+});
+
+// Add click sound to all buttons with error handling
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('button').forEach(button => {
+        button.addEventListener('click', () => {
+            // Don't play click sound if the button has a specific sound
+            if (!button.id.includes('total') && !button.id.includes('pdf')) {
+                playSound('click');
+            }
+        });
+    });
+});
 
 function displayPurchaseHistory() {
     const tableBody = document.querySelector("#purchaseHistory tbody");
@@ -304,10 +344,59 @@ function downloadPDF() {
     pdfMake.createPdf(docDefinition).download('Hisab_Kitab_Report.pdf');
 }
 
+// At the beginning of the file, after the initial variables
+
+// Initialize sounds for different actions
+const sounds = {
+    // Soft click for adding products <mcreference link="https://mixkit.co/free-sound-effects/click/" index="1">1</mcreference>
+    add: new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3'),
+    
+    // Subtle delete sound <mcreference link="https://www.zapsplat.com/sound-effect-category/button-clicks/" index="2">2</mcreference>
+    delete: new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'),
+    
+    // Alert notification
+    alert: new Audio('https://assets.mixkit.co/active_storage/sfx/2577/2577-preview.mp3'),
+    
+    // Positive chime for total <mcreference link="https://pixabay.com/sound-effects/search/ui/" index="3">3</mcreference>
+    total: new Audio('https://assets.mixkit.co/active_storage/sfx/2575/2575-preview.mp3'),
+    
+    // Success sound for PDF
+    pdf: new Audio('https://assets.mixkit.co/active_storage/sfx/2573/2573-preview.mp3'),
+    
+    // Button click sound for general buttons
+    click: new Audio('https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3')
+};
+
+// Preload sounds
+Object.values(sounds).forEach(sound => {
+    sound.load();
+    sound.volume = 0.3; // Reduced volume for better experience
+});
+
+// Add click sound to all buttons
+document.querySelectorAll('button').forEach(button => {
+    button.addEventListener('click', () => {
+        // Don't play click sound if the button has a specific sound
+        if (!button.id.includes('total') && !button.id.includes('pdf')) {
+            playSound('click');
+        }
+    });
+});
+
+// Add this function to test sounds
+function testSounds() {
+    Object.keys(sounds).forEach(type => {
+        sounds[type].play().catch(error => {
+            console.error(`Error playing ${type} sound:`, error);
+        });
+    });
+}
+
 displayPurchaseHistory();
 
 // Event listener for Total button
 document.getElementById("totalBtn")?.addEventListener("click", () => {
+    playSound('total');
     const total = purchaseHistory.reduce((sum, item) => sum + parseFloat(item.price || 0), 0);
     Swal.fire({
         title: "Total Purchase",
