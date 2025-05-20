@@ -52,9 +52,20 @@ body {
   animation: letterSpacing 1s ease;
 }
 
+/* Remove the green first letter */
 .top-header h1::first-letter {
-  color: #5cb85c;
+  color: #2c3e50; /* Changed to match the heading color */
   font-size: 2.5rem;
+}
+
+/* Remove the green line under the header */
+.top-header::after {
+  display: none; /* This will hide the green line */
+}
+
+/* Remove the green line under section headers */
+h2::after {
+  background: #eee; /* Changed to a light gray line */
 }
 
 #balanceDisplay {
@@ -364,6 +375,8 @@ th {
   to { opacity: 0; }
 }
 
+/* Remove all dark mode related styles */
+
 /* Enhanced for better Responsive Design */
 @media (min-width: 768px) {
   .top-header {
@@ -405,6 +418,86 @@ th {
   .action-buttons button:nth-child(3) { animation-delay: 0.3s; }
   .action-buttons button:nth-child(4) { animation-delay: 0.4s; }
   .action-buttons button:nth-child(5) { animation-delay: 0.5s; }
+}
+
+/* Add more responsive breakpoints */
+@media (max-width: 767px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .top-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  #balanceDisplay {
+    font-size: 1rem;
+    padding: 6px 12px;
+  }
+  
+  th, td {
+    padding: 10px 8px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.5rem;
+  }
+  
+  .container {
+    padding: 0.8rem;
+    border-radius: 12px;
+  }
+  
+  .top-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  button {
+    padding: 12px;
+  }
+  
+  th {
+    font-size: 0.7rem;
+  }
+  
+  td {
+    font-size: 0.8rem;
+  }
+}
+
+/* Toast notification for theme toggle */
+.toast-notification.info {
+  border-left: 4px solid #007bff;
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Tablet-specific adjustments */
+@media (min-width: 481px) and (max-width: 768px) {
+  .container {
+    max-width: 95%;
+  }
+  
+  .action-buttons button {
+    flex: 1 1 48%;
+  }
+}
+
+/* Large screen optimizations */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1000px;
+  }
+  
+  .action-buttons {
+    flex-direction: row;
+  }
+  
+  .action-buttons button {
+    flex: 1;
+  }
 }
 
 /* Add a loading spinner */
@@ -454,236 +547,27 @@ th {
   to { transform: translateY(0); }
 }
 
-/* Improved Theme toggle switch */
-.theme-switch {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 60px;
-  height: 30px;
-  background: #ccc;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 200;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-.theme-switch::after {
-  content: '☀️';
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 24px;
-  height: 24px;
-  background: white;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-.dark-mode .theme-switch {
-  background: #5cb85c;
-}
-
-.dark-mode .theme-switch::after {
-  content: '🌙';
-  transform: translateX(30px);
-}
-
-/* Mobile-specific theme switch improvements */
-@media (max-width: 767px) {
-  .theme-switch {
-    top: auto;
-    bottom: 95px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    z-index: 200;
-    border: 3px solid #5cb85c;
+/* Additional responsive adjustments */
+@media (max-width: 480px) {
+  .container {
+    padding: 1rem;
   }
   
-  .theme-switch::after {
-    content: '☀️';
-    width: 40px;
-    height: 40px;
-    top: 2px;
-    left: 2px;
-    font-size: 20px;
-    background: transparent;
-    box-shadow: none;
+  .top-header h1 {
+    font-size: 1.8rem;
   }
   
-  .dark-mode .theme-switch {
-    background: rgba(15, 52, 96, 0.95);
-    border: 3px solid #5cb85c;
+  #balanceDisplay {
+    font-size: 1rem;
+    padding: 6px 12px;
   }
   
-  .dark-mode .theme-switch::after {
-    content: '🌙';
-    transform: none;
-    right: 0;
-    left: 0;
-    margin: auto;
+  .action-buttons button {
+    flex: 1 1 100%;
   }
   
-  /* Pulsing animation to draw attention on mobile */
-  @keyframes pulsate {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.1); opacity: 0.8; }
-    100% { transform: scale(1); opacity: 1; }
+  th, td {
+    padding: 10px 8px;
+    font-size: 0.9rem;
   }
-  
-  .theme-switch {
-    animation: pulsate 2s ease-in-out infinite;
-  }
-  
-  .theme-switch:hover {
-    animation: none;
-  }
-}
-
-/* Dark Mode Styles */
-.dark-mode {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  color: #f0f0f0;
-}
-
-.dark-mode .container {
-  background-color: #0f3460;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.dark-mode .top-header h1 {
-  color: #e0e0e0;
-}
-
-.dark-mode #balanceDisplay {
-  background: linear-gradient(145deg, #1e3a5f, #0f3460);
-  color: #5cb85c;
-  border-left: 4px solid #5cb85c;
-}
-
-.dark-mode .input-section {
-  background: rgba(20, 30, 60, 0.7);
-}
-
-.dark-mode input[type="text"],
-.dark-mode input[type="number"] {
-  background: #16213e;
-  border-color: #2a4365;
-  color: #e0e0e0;
-}
-
-.dark-mode input::placeholder {
-  color: #8095b2;
-}
-
-.dark-mode table {
-  background-color: #16213e;
-}
-
-.dark-mode thead {
-  background: linear-gradient(145deg, #0f3460, #16213e);
-}
-
-.dark-mode th {
-  color: #5cb85c;
-}
-
-.dark-mode td {
-  border-bottom: 1px solid #2a4365;
-}
-
-.dark-mode #purchaseHistory tbody tr:nth-child(even) {
-  background-color: #1c2840;
-}
-
-.dark-mode #purchaseHistory tbody tr:hover {
-  background-color: #0f4c75;
-}
-
-.dark-mode h2 {
-  color: #e0e0e0;
-}
-
-.dark-mode h2::after {
-  background: linear-gradient(90deg, #16213e, #5cb85c, #16213e);
-}
-
-.dark-mode .toast-notification {
-  background: #0f3460;
-  color: #e0e0e0;
-}
-
-
-
-/* Theme container and label styles */
-.theme-container {
-  position: relative;
-  z-index: 200;
-}
-
-.theme-label {
-  position: absolute;
-  font-size: 10px;
-  font-weight: bold;
-  color: #333;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  text-shadow: 0 1px 1px rgba(255,255,255,0.7);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.dark-mode .theme-label {
-  color: #fff;
-  text-shadow: 0 1px 1px rgba(0,0,0,0.7);
-}
-
-/* Active state */
-.theme-switch.active {
-  transform: scale(0.95);
-}
-
-/* Show label on hover for larger screens */
-@media (min-width: 768px) {
-  .theme-switch:hover .theme-label {
-    opacity: 1;
-  }
-}
-
-/* Toast notification for theme toggle */
-.toast-notification.info {
-  border-left: 4px solid #007bff;
-  background-color: rgba(0, 123, 255, 0.1);
-}
-
-.dark-mode .toast-notification.info {
-  background-color: rgba(0, 123, 255, 0.3);
-  color: #e0e0e0;
-}
-
-/* Make the theme switch more visible when page loads */
-@keyframes highlightThemeButton {
-  0% { transform: scale(1); box-shadow: 0 0 0 rgba(92, 184, 92, 0); }
-  50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(92, 184, 92, 0.7); }
-  100% { transform: scale(1); box-shadow: 0 0 0 rgba(92, 184, 92, 0); }
-}
-
-.theme-switch {
-  animation: highlightThemeButton 2s ease-in-out 1s;
 }

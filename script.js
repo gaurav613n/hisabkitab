@@ -177,53 +177,131 @@ function reloadPage() {
 }
 
 function downloadPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+    // Create document definition for pdfmake
+    const docDefinition = {
+        pageSize: 'A4',
+        pageMargins: [40, 60, 40, 60],
+        header: {
+            text: 'Hisab Kitab Report',
+            alignment: 'center',
+            margin: [0, 20, 0, 20],
+            fontSize: 20,
+            bold: true,
+            color: '#5cb85c'
+        },
+        footer: function(currentPage, pageCount) {
+            return {
+                text: currentPage.toString() + ' of ' + pageCount,
+                alignment: 'center',
+                margin: [0, 10, 0, 0]
+            };
+        },
+        content: [
+            // Company/App Info
+            {
+                columns: [
+                    {
+                        width: '*',
+                        text: [
+                            { text: 'Hisab Kitab', fontSize: 16, bold: true, color: '#5cb85c' },
+                            '\n',
+                            { text: 'Generated: ' + new Date().toLocaleString(), fontSize: 10 }
+                        ]
+                    },
+                    {
+                        width: '*',
+                        text: [
+                            { text: 'Current Balance:', fontSize: 12 },
+                            '\n',
+                            { text: '₹' + totalBalance.toFixed(2), fontSize: 16, bold: true, color: totalBalance >= 0 ? '#28a745' : '#dc3545' }
+                        ],
+                        alignment: 'right'
+                    }
+                ],
+                margin: [0, 0, 0, 20]
+            },
+            
+            // Purchase History Section
+            { text: 'Product Purchase History', style: 'sectionHeader' },
+            {
+                table: {
+                    headerRows: 1,
+                    widths: ['auto', '*', 'auto', 'auto'],
+                    body: [
+                        // Header row
+                        [{ text: '#', style: 'tableHeader' }, 
+                         { text: 'Product Name', style: 'tableHeader' }, 
+                         { text: 'Price', style: 'tableHeader' }, 
+                         { text: 'Date', style: 'tableHeader' }],
+                        // Data rows
+                        ...purchaseHistory.map((item, index) => [
+                            index + 1,
+                            item.name,
+                            { text: '₹' + parseFloat(item.price).toFixed(2), alignment: 'right' },
+                            item.date || 'N/A'
+                        ])
+                    ]
+                },
+                layout: {
+                    fillColor: function(rowIndex) {
+                        return (rowIndex % 2 === 0) ? '#f9f9f9' : null;
+                    }
+                }
+            },
+            
+            // Total Purchase Amount
+            {
+                text: 'Total Purchase Amount: ₹' + purchaseHistory.reduce((sum, item) => sum + parseFloat(item.price || 0), 0).toFixed(2),
+                alignment: 'right',
+                bold: true,
+                margin: [0, 10, 0, 20]
+            },
+            
+            // Balance History Section
+            { text: 'Balance Addition History', style: 'sectionHeader' },
+            {
+                table: {
+                    headerRows: 1,
+                    widths: ['auto', 'auto', '*', 'auto'],
+                    body: [
+                        // Header row
+                        [{ text: '#', style: 'tableHeader' }, 
+                         { text: 'Amount', style: 'tableHeader' }, 
+                         { text: 'Reason', style: 'tableHeader' }, 
+                         { text: 'Date', style: 'tableHeader' }],
+                        // Data rows
+                        ...balanceHistory.map((entry, index) => [
+                            index + 1,
+                            { text: '₹' + parseFloat(entry.amount).toFixed(2), alignment: 'right' },
+                            entry.reason || 'N/A',
+                            entry.date || 'N/A'
+                        ])
+                    ]
+                },
+                layout: {
+                    fillColor: function(rowIndex) {
+                        return (rowIndex % 2 === 0) ? '#f9f9f9' : null;
+                    }
+                }
+            }
+        ],
+        styles: {
+            sectionHeader: {
+                fontSize: 14,
+                bold: true,
+                margin: [0, 15, 0, 10],
+                color: '#5cb85c'
+            },
+            tableHeader: {
+                bold: true,
+                fontSize: 12,
+                color: '#007acc'
+            }
+        }
+    };
 
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(18);
-    doc.text("Hisab Kitab Report", 14, 20);
-
-    // Purchase History Table
-    doc.setFontSize(14);
-    doc.text("Product Purchase History", 14, 35);
-
-    const productRows = purchaseHistory.map((item, index) => [
-        index + 1,
-        item.name,
-        `₹${item.price}`,
-        item.date
-    ]);
-
-    doc.autoTable({
-        startY: 40,
-        head: [["#", "Product Name", "Price", "Date"]],
-        body: productRows,
-        styles: { fontSize: 10 },
-        theme: "striped"
-    });
-
-    // Balance History Table
-    const balanceStartY = doc.lastAutoTable.finalY + 15;
-    doc.setFontSize(14);
-    doc.text("Balance Addition History", 14, balanceStartY);
-
-    const balanceRows = balanceHistory.map((entry, index) => [
-        index + 1,
-        `₹${entry.amount}`,
-        entry.reason,
-        entry.date
-    ]);
-
-    doc.autoTable({
-        startY: balanceStartY + 5,
-        head: [["#", "Amount", "Reason", "Date"]],
-        body: balanceRows,
-        styles: { fontSize: 10 },
-        theme: "striped"
-    });
-
-    doc.save("Hisab_Kitab_Report.pdf");
+    // Generate and download the PDF
+    pdfMake.createPdf(docDefinition).download('Hisab_Kitab_Report.pdf');
 }
 
 displayPurchaseHistory();
@@ -254,24 +332,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// Enhanced Theme Toggle Functionality
-const themeSwitch = document.getElementById('themeSwitch');
-const themeLabel = document.querySelector('.theme-label');
-
-// Initialize theme on page load
-function initTheme() {
-  // Check for saved theme preference
-  if (localStorage.getItem('darkMode') === 'true') {
-    document.body.classList.add('dark-mode');
-    if (themeLabel) themeLabel.textContent = 'Light';
-  } else {
-    if (themeLabel) themeLabel.textContent = 'dark';
-  }
-  
-  // Show brief indicator to users about the theme toggle
-  showThemeToast();
-}
-
+// Remove these lines at the end of the file (lines 400-443)
 // Toggle theme function
 function toggleTheme() {
   document.body.classList.toggle('dark-mode');
