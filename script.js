@@ -347,25 +347,7 @@ function downloadPDF() {
 // At the beginning of the file, after the initial variables
 
 // Initialize sounds for different actions
-const sounds = {
-    // Soft click for adding products <mcreference link="https://mixkit.co/free-sound-effects/click/" index="1">1</mcreference>
-    add: new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3'),
-    
-    // Subtle delete sound <mcreference link="https://www.zapsplat.com/sound-effect-category/button-clicks/" index="2">2</mcreference>
-    delete: new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'),
-    
-    // Alert notification
-    alert: new Audio('https://assets.mixkit.co/active_storage/sfx/2577/2577-preview.mp3'),
-    
-    // Positive chime for total <mcreference link="https://pixabay.com/sound-effects/search/ui/" index="3">3</mcreference>
-    total: new Audio('https://assets.mixkit.co/active_storage/sfx/2575/2575-preview.mp3'),
-    
-    // Success sound for PDF
-    pdf: new Audio('https://assets.mixkit.co/active_storage/sfx/2573/2573-preview.mp3'),
-    
-    // Button click sound for general buttons
-    click: new Audio('https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3')
-};
+
 
 // Preload sounds
 Object.values(sounds).forEach(sound => {
@@ -421,46 +403,18 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// Remove these lines at the end of the file (lines 400-443)
+// Remove the duplicate sounds object (around line 350)
 // Toggle theme function
-function toggleTheme() {
-  document.body.classList.toggle('dark-mode');
-  const isDarkMode = document.body.classList.contains('dark-mode');
-  localStorage.setItem('darkMode', isDarkMode);
-  
-  // Update label text
-  if (themeLabel) {
-    themeLabel.textContent = isDarkMode ? '' : '';
-  }
-  
-  // Show confirmation toast
-  showToast(isDarkMode ? 'Dark mode enabled!' : 'Light mode enabled!');
-}
 
-// Show a toast notification about the theme toggle button
-function showThemeToast() {
-  // Only show this toast once per session
-  if (!sessionStorage.getItem('themeToastShown')) {
-    setTimeout(() => {
-      showToast('Tap the mode button to toggle theme!', 'info');
-      sessionStorage.setItem('themeToastShown', 'true');
-    }, 3000);
-  }
-}
 
-// Add event listener
-if (themeSwitch) {
-  themeSwitch.addEventListener('click', toggleTheme);
-  
-  // Add mobile-specific events
-  themeSwitch.addEventListener('touchstart', function() {
-    this.classList.add('active');
-  });
+
+
+// Also remove the related event listeners
+
   
   themeSwitch.addEventListener('touchend', function() {
     this.classList.remove('active');
   });
-}
+
 
 // Initialize theme when DOM is loaded
-document.addEventListener('DOMContentLoaded', initTheme);
