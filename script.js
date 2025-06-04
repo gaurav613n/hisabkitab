@@ -323,15 +323,19 @@ document.getElementById("totalBtn")?.addEventListener("click", () => {
 });
 
 window.addEventListener("DOMContentLoaded", () => {
-    if (!localStorage.getItem("welcomeShown")) {
+    const lastWelcomeTime = localStorage.getItem("lastWelcomeTime");
+    const currentTime = new Date().getTime();
+    const thirtyMinutes = 30 * 60 * 1000; // 30 minutes in milliseconds
+
+    if (!lastWelcomeTime || (currentTime - parseInt(lastWelcomeTime)) > thirtyMinutes) {
         Swal.fire({
             title: "Welcome to Hisab Kitab!",
             text: "Track your expenses smartly 💰",
             icon: "success",
-            timer: 2500,
+            timer: 3000,
             showConfirmButton: false
         });
-        localStorage.setItem("welcomeShown", "true");
+        localStorage.setItem("lastWelcomeTime", currentTime.toString());
     }
 });
 
