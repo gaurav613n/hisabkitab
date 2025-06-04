@@ -600,3 +600,145 @@ td {
     font-size: 0.9rem;
   }
 }
+
+/* Custom SweetAlert2 Styles */
+.swal2-popup {
+  border-radius: 20px !important;
+  padding: 1.8rem !important;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+  border: 1px solid rgba(255,255,255,0.2) !important;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa) !important;
+}
+
+.swal2-confirm, 
+.swal2-cancel, 
+.swal2-deny {
+  border-radius: 12px !important;
+  padding: 12px 28px !important;
+  font-size: 1rem !important;
+  transition: all 0.3s ease !important;
+  text-transform: none !important;
+  font-weight: 500 !important;
+}
+
+.swal2-confirm {
+  background: linear-gradient(145deg, #4ade80, #22c55e) !important;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.2) !important;
+}
+
+.swal2-cancel {
+  background: linear-gradient(145deg, #6b7280, #4b5563) !important;
+  box-shadow: 0 4px 15px rgba(107, 114, 128, 0.2) !important;
+}
+
+.swal2-deny {
+  background: linear-gradient(145deg, #ef4444, #dc2626) !important;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2) !important;
+}
+
+.swal2-input, 
+.swal2-textarea {
+  border-radius: 12px !important;
+  padding: 12px 16px !important;
+  transition: all 0.3s ease !important;
+  background: linear-gradient(145deg, #ffffff, #f7fefa) !important;
+  border: 2px solid rgba(72, 187, 120, 0.2) !important;
+}
+
+.swal2-popup .swal2-title {
+  font-size: 1.6rem !important;
+  margin-bottom: 1.2rem !important;
+  color: #2c3e50 !important;
+}
+
+.swal2-popup .swal2-html-container {
+  color: #4b5563 !important;
+  font-size: 1.1rem !important;
+}
+
+/* Toast notification styles */
+.swal2-toast {
+  background: linear-gradient(145deg, #ffffff, #f8f9fa) !important;
+  border-radius: 16px !important;
+  padding: 1rem 1.5rem !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1) !important;
+}
+
+.swal2-toast.swal2-show {
+  animation: slideInRight 0.3s ease-out !important;
+}
+
+.swal2-toast .swal2-title {
+  font-size: 1rem !important;
+  color: #374151 !important;
+}
+
+/* Toast variants */
+.swal2-toast.swal2-success {
+  border-left: 4px solid #4ade80 !important;
+}
+
+.swal2-toast.swal2-error {
+  border-left: 4px solid #ef4444 !important;
+}
+
+.swal2-toast.swal2-warning {
+  border-left: 4px solid #f59e0b !important;
+}
+
+.swal2-toast.swal2-info {
+  border-left: 4px solid #3b82f6 !important;
+}
+
+/* Timer progress bar */
+.swal2-timer-progress-bar {
+  background: linear-gradient(90deg, rgba(74, 222, 128, 0.4), rgba(34, 197, 94, 0.4)) !important;
+  border-bottom-left-radius: 16px !important;
+  border-bottom-right-radius: 16px !important;
+  height: 0.25rem !important;
+}
+
+/* Input focus styles */
+.swal2-input:focus,
+.swal2-textarea:focus {
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2) !important;
+  border-color: #4ade80 !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Modal animations */
+.swal2-show {
+  animation: fadeInUp 0.3s ease-out !important;
+}
+
+.swal2-hide {
+  animation: fadeOutDown 0.3s ease-in !important;
+}
+
+/* Success icon animation */
+.swal2-success-circular-line-left,
+.swal2-success-circular-line-right,
+.swal2-success-fix {
+  background-color: transparent !important;
+}
+
+.swal2-success-ring {
+  border-color: rgba(74, 222, 128, 0.3) !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+  .swal2-popup {
+    padding: 1.2rem !important;
+    width: 90% !important;
+  }
+  
+  .swal2-popup .swal2-title {
+    font-size: 1.3rem !important;
+  }
+  
+  .swal2-toast {
+    width: 90% !important;
+    margin: 0.5rem !important;
+  }
+}
