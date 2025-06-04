@@ -4,6 +4,34 @@ const purchaseHistory = JSON.parse(localStorage.getItem("purchaseHistory")) || [
 let totalBalance = parseFloat(localStorage.getItem("totalBalance")) || 0;
 const balanceHistory = JSON.parse(localStorage.getItem("balanceHistory")) || [];
 
+// Alert configurations
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    showClass: {
+        popup: 'animate__animated animate__fadeInRight'
+    },
+    hideClass: {
+        popup: 'animate__animated animate__fadeOutRight'
+    }
+});
+
+const DeleteConfirm = Swal.mixin({
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    showClass: {
+        popup: 'animate__animated animate__fadeInDown'
+    },
+    hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+    }
+});
+
 function displayPurchaseHistory() {
     const tableBody = document.querySelector("#purchaseHistory tbody");
     if (!tableBody) return console.error("Table body not found");
@@ -39,12 +67,32 @@ function addProduct() {
     const price = parseFloat(document.getElementById("productPrice")?.value);
 
     if (!name || isNaN(price) || price <= 0) {
-        swal("Invalid Input", "❗ Please enter a valid product name and a positive price.", "error");
+        Swal.fire({
+            title: 'Invalid Input',
+            text: 'Please enter a valid product name and a positive price',
+            icon: 'error',
+            showClass: {
+                popup: 'animate__animated animate__shakeX'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOut'
+            }
+        });
         return;
     }
 
     if (totalBalance < price) {
-        swal("Insufficient Balance", "⚠️ Please add more balance to continue.", "warning");
+        Swal.fire({
+            title: 'Insufficient Balance',
+            text: 'Please add more balance to continue',
+            icon: 'warning',
+            showClass: {
+                popup: 'animate__animated animate__bounceIn'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOut'
+            }
+        });
         return;
     }
 
@@ -59,12 +107,19 @@ function addProduct() {
     clearInputs();
 
     // ✅ SweetAlert Success Confirmation
-    swal({
-        title: "Product Added!",
+    Swal.fire({
+        title: 'Product Added!',
         text: `${name} for ₹${price.toFixed(2)} has been added.`,
-        icon: "success",
-        button: "Awesome!",
-        timer: 2000
+        icon: 'success',
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        },
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false
     });
 }
 
@@ -76,74 +131,108 @@ function clearInputs() {
 
 function deleteRow(index) {
     if (index < 0 || index >= purchaseHistory.length) return;
-    totalBalance += parseFloat(purchaseHistory[index].price);
-    purchaseHistory.splice(index, 1);
-    localStorage.setItem("purchaseHistory", JSON.stringify(purchaseHistory));
-    localStorage.setItem("totalBalance", totalBalance);
-    displayPurchaseHistory();
+    
+    DeleteConfirm.fire({
+        title: 'Delete Item?',
+        text: 'Are you sure you want to remove this item?',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            totalBalance += parseFloat(purchaseHistory[index].price);
+            purchaseHistory.splice(index, 1);
+            localStorage.setItem("purchaseHistory", JSON.stringify(purchaseHistory));
+            localStorage.setItem("totalBalance", totalBalance);
+            displayPurchaseHistory();
+            
+            Toast.fire({
+                icon: 'success',
+                title: 'Item deleted successfully'
+            });
+        }
+    });
 }
 
 function deleteAll() {
-    swal({
-        title: "Delete All Products?",
-        text: "This will remove all purchase history.",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-    }).then((willDelete) => {
-        if (willDelete) {
+    DeleteConfirm.fire({
+        title: 'Delete All Products?',
+        text: 'This will remove all purchase history.',
+        confirmButtonText: 'Yes, delete all!'
+    }).then((result) => {
+        if (result.isConfirmed) {
             localStorage.removeItem("purchaseHistory");
             purchaseHistory.length = 0;
             displayPurchaseHistory();
+            
+            Toast.fire({
+                icon: 'success',
+                title: 'All items deleted successfully'
+            });
         }
     });
 }
 
 function deleteBalance() {
-    swal({
-        title: "Reset Balance?",
-        text: "This will reset your balance and clear history.",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-    }).then((confirmed) => {
-        if (confirmed) {
+    DeleteConfirm.fire({
+        title: 'Reset Balance?',
+        text: 'This will reset your balance and clear history.',
+        confirmButtonText: 'Yes, reset it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
             localStorage.removeItem("totalBalance");
             localStorage.removeItem("balanceHistory");
             totalBalance = 0;
             balanceHistory.length = 0;
             updateBalanceDisplay();
+            
+            Toast.fire({
+                icon: 'success',
+                title: 'Balance reset successfully'
+            });
         }
     });
 }
 
 function addBalance() {
-    swal("Enter amount to add to your balance:", {
-        content: "input",
-    }).then(amountStr => {
-        const amount = parseFloat(amountStr);
-        if (!isNaN(amount) && amount > 0) {
-            swal("Enter reason for adding this amount:", {
-                content: "input"
-            }).then(reason => {
-                const date = new Date().toLocaleString();
-                totalBalance += amount;
-                balanceHistory.push({ amount, reason: reason || "No reason provided", date });
-                localStorage.setItem("totalBalance", totalBalance);
-                localStorage.setItem("balanceHistory", JSON.stringify(balanceHistory));
-                updateBalanceDisplay();
+    Swal.fire({
+        title: 'Add Balance',
+        html: `
+            <div class="animate__animated animate__fadeIn">
+                <input type="number" id="balanceAmount" class="swal2-input" placeholder="Enter amount">
+                <input type="text" id="balanceReason" class="swal2-input" placeholder="Enter reason (optional)">
+            </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Add',
+        showLoaderOnConfirm: true,
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        },
+        preConfirm: () => {
+            const amount = parseFloat(document.getElementById('balanceAmount').value);
+            const reason = document.getElementById('balanceReason').value;
+            if (!amount || amount <= 0) {
+                Swal.showValidationMessage('Please enter a valid amount');
+                return false;
+            }
+            return { amount, reason };
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const { amount, reason } = result.value;
+            const date = new Date().toLocaleString();
+            totalBalance += amount;
+            balanceHistory.push({ amount, reason: reason || "No reason provided", date });
+            localStorage.setItem("totalBalance", totalBalance);
+            localStorage.setItem("balanceHistory", JSON.stringify(balanceHistory));
+            updateBalanceDisplay();
 
-                // ✅ Show confirmation popup
-                swal({
-                    title: "Balance Added!",
-                    text: `₹${amount.toFixed(2)} added for: ${reason || "No reason provided"}`,
-                    icon: "success",
-                    timer: 2500,
-                    button: false
-                });
+            Toast.fire({
+                icon: 'success',
+                title: `₹${amount.toFixed(2)} added successfully`
             });
-        } else {
-            swal("Invalid Amount", "Please enter a valid number greater than zero.", "error");
         }
     });
 }
