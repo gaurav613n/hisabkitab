@@ -1,58 +1,8 @@
-// Enhanced script.js for Hisab Kitab - With Sound, Animation, PDF, and Excel Support
+// Enhanced script.js for Hisab Kitab - With Animation, PDF, and Excel Support
 
 const purchaseHistory = JSON.parse(localStorage.getItem("purchaseHistory")) || [];
 let totalBalance = parseFloat(localStorage.getItem("totalBalance")) || 0;
 const balanceHistory = JSON.parse(localStorage.getItem("balanceHistory")) || [];
-
-// Sound utility functions
-const createAudio = (url) => {
-    const audio = new Audio(url);
-    audio.load(); // Preload the audio
-    return audio;
-};
-
-const sounds = {
-    // Using GitHub-compatible CDN URLs for sounds <mcreference link="https://github.com/orgs/community/discussions/22174" index="1">1</mcreference>
-    add: createAudio('https://cdn.jsdelivr.net/gh/freeCodeCamp/cdn/build/testable-projects-fcc/audio/BeepSound.wav'),
-    delete: createAudio('https://cdn.jsdelivr.net/gh/freeCodeCamp/cdn/build/testable-projects-fcc/audio/shrink-ray.mp3'),
-    alert: createAudio('https://cdn.jsdelivr.net/gh/freeCodeCamp/cdn/build/testable-projects-fcc/audio/warning-sound.mp3'),
-    total: createAudio('https://cdn.jsdelivr.net/gh/freeCodeCamp/cdn/build/testable-projects-fcc/audio/click-sound.mp3'),
-    pdf: createAudio('https://cdn.jsdelivr.net/gh/freeCodeCamp/cdn/build/testable-projects-fcc/audio/success-sound.mp3'),
-    click: createAudio('https://cdn.jsdelivr.net/gh/freeCodeCamp/cdn/build/testable-projects-fcc/audio/button-click.mp3')
-};
-
-// Enhanced playSound function with error handling
-function playSound(type) {
-    if (!sounds[type]) return; // Guard clause for non-existent sounds
-    
-    sounds[type].play().catch(error => {
-        console.warn(`Failed to play ${type} sound:`, error);
-        // Create a new instance and try again
-        sounds[type].load();
-    });
-}
-
-// Initialize sound settings
-Object.values(sounds).forEach(sound => {
-    sound.volume = 0.3; // Set volume to 30%
-    
-    // Add error handling for loading
-    sound.addEventListener('error', (e) => {
-        console.warn('Error loading sound:', e);
-    });
-});
-
-// Add click sound to all buttons with error handling
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('button').forEach(button => {
-        button.addEventListener('click', () => {
-            // Don't play click sound if the button has a specific sound
-            if (!button.id.includes('total') && !button.id.includes('pdf')) {
-                playSound('click');
-            }
-        });
-    });
-});
 
 function displayPurchaseHistory() {
     const tableBody = document.querySelector("#purchaseHistory tbody");
@@ -89,13 +39,11 @@ function addProduct() {
     const price = parseFloat(document.getElementById("productPrice")?.value);
 
     if (!name || isNaN(price) || price <= 0) {
-        playSound("alert");
         swal("Invalid Input", "❗ Please enter a valid product name and a positive price.", "error");
         return;
     }
 
     if (totalBalance < price) {
-        playSound("alert");
         swal("Insufficient Balance", "⚠️ Please add more balance to continue.", "warning");
         return;
     }
@@ -107,7 +55,6 @@ function addProduct() {
     localStorage.setItem("purchaseHistory", JSON.stringify(purchaseHistory));
     localStorage.setItem("totalBalance", totalBalance);
 
-    playSound("add");
     displayPurchaseHistory();
     clearInputs();
 
@@ -133,7 +80,6 @@ function deleteRow(index) {
     purchaseHistory.splice(index, 1);
     localStorage.setItem("purchaseHistory", JSON.stringify(purchaseHistory));
     localStorage.setItem("totalBalance", totalBalance);
-    playSound("delete");
     displayPurchaseHistory();
 }
 
@@ -149,7 +95,6 @@ function deleteAll() {
             localStorage.removeItem("purchaseHistory");
             purchaseHistory.length = 0;
             displayPurchaseHistory();
-            playSound("delete");
         }
     });
 }
@@ -168,7 +113,6 @@ function deleteBalance() {
             totalBalance = 0;
             balanceHistory.length = 0;
             updateBalanceDisplay();
-            playSound("delete");
         }
     });
 }
@@ -188,7 +132,6 @@ function addBalance() {
                 localStorage.setItem("totalBalance", totalBalance);
                 localStorage.setItem("balanceHistory", JSON.stringify(balanceHistory));
                 updateBalanceDisplay();
-                playSound("add");
 
                 // ✅ Show confirmation popup
                 swal({
@@ -217,7 +160,7 @@ function reloadPage() {
 }
 
 function downloadPDF() {
-    // Create document definition for pdfmake
+    // Create document definition for pdfmake with fallback fonts
     const docDefinition = {
         pageSize: 'A4',
         pageMargins: [40, 60, 40, 60],
@@ -228,6 +171,9 @@ function downloadPDF() {
             fontSize: 20,
             bold: true,
             color: '#5cb85c'
+        },
+        defaultStyle: {
+            font: 'Roboto'  // Use Roboto as default font
         },
         footer: function(currentPage, pageCount) {
             return {
@@ -340,45 +286,33 @@ function downloadPDF() {
         }
     };
 
-    // Generate and download the PDF
-    pdfMake.createPdf(docDefinition).download('Hisab_Kitab_Report.pdf');
-}
-
-// At the beginning of the file, after the initial variables
-
-// Initialize sounds for different actions
-
-
-// Preload sounds
-Object.values(sounds).forEach(sound => {
-    sound.load();
-    sound.volume = 0.3; // Reduced volume for better experience
-});
-
-// Add click sound to all buttons
-document.querySelectorAll('button').forEach(button => {
-    button.addEventListener('click', () => {
-        // Don't play click sound if the button has a specific sound
-        if (!button.id.includes('total') && !button.id.includes('pdf')) {
-            playSound('click');
-        }
-    });
-});
-
-// Add this function to test sounds
-function testSounds() {
-    Object.keys(sounds).forEach(type => {
-        sounds[type].play().catch(error => {
-            console.error(`Error playing ${type} sound:`, error);
+    // Generate and download the PDF with error handling
+    try {
+        const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+        pdfDocGenerator.getBlob((blob) => {
+            // Create a link element to trigger the download
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'Hisab_Kitab_Report.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        }, (error) => {
+            console.error('PDF generation error:', error);
+            swal('Error', 'Failed to generate PDF. Please try again.', 'error');
         });
-    });
+    } catch (error) {
+        console.error('PDF creation error:', error);
+        swal('Error', 'Failed to create PDF. Please try again.', 'error');
+    }
 }
 
 displayPurchaseHistory();
 
 // Event listener for Total button
 document.getElementById("totalBtn")?.addEventListener("click", () => {
-    playSound('total');
     const total = purchaseHistory.reduce((sum, item) => sum + parseFloat(item.price || 0), 0);
     Swal.fire({
         title: "Total Purchase",
@@ -397,24 +331,8 @@ window.addEventListener("DOMContentLoaded", () => {
             timer: 2500,
             showConfirmButton: false
         });
-        playSound("add");
         localStorage.setItem("welcomeShown", "true");
     }
 });
 
-
-// Remove the duplicate sounds object (around line 350)
 // Toggle theme function
-
-
-
-
-// Also remove the related event listeners
-
-  
-  themeSwitch.addEventListener('touchend', function() {
-    this.classList.remove('active');
-  });
-
-
-// Initialize theme when DOM is loaded
