@@ -418,7 +418,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     if (!lastWelcomeTime || (currentTime - parseInt(lastWelcomeTime)) > thirtyMinutes) {
         Swal.fire({
-            title: "Welcome to Hisab Kitab!",
+            title: "Welcome to LedgerPro!",
             text: "Track your expenses smartly 💰",
             icon: "success",
             timer: 3000,
@@ -428,15 +428,30 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// Handle splash screen
+// Handle splash screen only in standalone mode
+function isStandalone() {
+    return (
+        window.matchMedia('(display-mode: standalone)').matches ||
+        window.navigator.standalone === true
+    );
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        const splashScreen = document.getElementById('splash-screen');
-        splashScreen.classList.add('fade-out');
+    if (isStandalone()) {
         setTimeout(() => {
-            splashScreen.style.display = 'none';
-        }, 500);
-    }, 2000);
+            const splashScreen = document.getElementById('splash-screen');
+            if (splashScreen) {
+                splashScreen.classList.add('fade-out');
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                }, 500);
+            }
+        }, 2000);
+    } else {
+        // Hide splash screen immediately in browser
+        const splashScreen = document.getElementById('splash-screen');
+        if (splashScreen) splashScreen.style.display = 'none';
+    }
 });
 
 // PWA Installation
