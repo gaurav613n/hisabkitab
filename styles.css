@@ -402,6 +402,9 @@ td {
   to { opacity: 0; }
 }
 
+/* Hide main app while splash is visible */
+
+
 /* Remove all dark mode related styles */
 
 /* Enhanced for better Responsive Design */

@@ -431,6 +431,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const splashScreen = document.getElementById('splash-screen');
     const loadingBar = document.querySelector('.loading-progress');
     if (isStandalone()) {
+        document.body.classList.add('splash-active');
         if (splashScreen && loadingBar) {
             splashScreen.style.display = 'flex';
             loadingBar.style.width = '0%';
@@ -442,12 +443,14 @@ window.addEventListener("DOMContentLoaded", () => {
                 splashScreen.classList.add('fade-out');
                 setTimeout(() => {
                     splashScreen.style.display = 'none';
+                    document.body.classList.remove('splash-active');
                 }, 500);
             }, 2000); // Show splash for 2s
         }
     } else {
         // Hide splash immediately in browser
         if (splashScreen) splashScreen.style.display = 'none';
+        document.body.classList.remove('splash-active');
     }
 });
 
