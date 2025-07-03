@@ -4,19 +4,19 @@
     "description": "Track your expenses smartly with LedgerPro",
     "icons": [
       {
-        "src": "./android-chrome-192x192.png",
+        "src": "/android-chrome-192x192.png",
         "sizes": "192x192",
         "type": "image/png",
         "purpose": "any maskable"
       },
       {
-        "src": "./android-chrome-512x512.png",
+        "src": "/android-chrome-512x512.png",
         "sizes": "512x512",
         "type": "image/png",
         "purpose": "any maskable"
       }
     ],
-    "start_url": "./",
+    "start_url": "/",
     "display": "standalone",
     "orientation": "portrait",
     "background_color": "#ffffff",
@@ -30,12 +30,12 @@
         "short_name": "New Entry",
         "description": "Add a new expense entry",
         "url": "/?action=new",
-        "icons": [{ "src": "./android-chrome-192x192.png", "sizes": "192x192" }]
+        "icons": [{ "src": "/android-chrome-192x192.png", "sizes": "192x192" }]
       }
     ],
     "screenshots": [
       {
-        "src": "./screenshot1.png",
+        "src": "/screenshot1.png",
         "type": "image/png",
         "sizes": "1080x1920",
         "form_factor": "narrow"
@@ -48,7 +48,6 @@
     "launch_handler": {
       "client_mode": ["focus-existing", "auto"]
     },
-    "scope": "./",
+    "scope": "/",
     "id": "ledgerpro-pwa"
 }
-  
