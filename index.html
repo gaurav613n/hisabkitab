@@ -2,9 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#5cb85c" />
-  <title>Hisab Kitab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#5cb85c" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#1a472a" media="(prefers-color-scheme: dark)" />
+  <meta name="description" content="Track your expenses smartly with LedgerPro" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>LedgerPro - Smart Finance Tracker</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <link rel="manifest" href="manifest.json" />
@@ -17,14 +21,35 @@
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js')
-      .then(() => console.log('Service Worker registered'));
+      .then(() => console.log('Service Worker registered'))
+      .catch(err => console.error('Service Worker registration failed:', err));
   }
 </script>
 </head>
 <body>
+  <!-- Splash Screen -->
+  <div id="splash-screen" class="splash-screen">
+    <div class="splash-content">
+      <div class="logo-container">
+        <img src="./android-chrome-192x192.png" alt="LedgerPro Logo" class="splash-logo" />
+      </div>
+      <div class="loading-bar">
+        <div class="loading-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Install Prompt Banner -->
+  <div id="install-banner" class="install-banner" style="display: none;">
+    <p>Install LedgerPro for a better experience!</p>
+    <button id="install-button">Install</button>
+    <button id="close-banner">✕</button>
+  </div>
+
+  <!-- Main Content -->
   <div class="container">
     <header class="top-header">
-      <h1>Hisab Kitab</h1>
+      <h1>LedgerPro</h1>
       <span id="balanceDisplay">Balance: ₹0.00</span>
     </header>
 

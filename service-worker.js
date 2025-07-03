@@ -1,13 +1,21 @@
 // Cache name with version
-const CACHE_NAME = 'hisab-kitab-cache-v1';
+const CACHE_NAME = 'ledgerpro-v1';
 
 // Files to cache
-const urlsToCache = [
+const ASSETS = [
   './',
   './index.html',
   './styles.css',
   './script.js',
   './manifest.json',
+  './android-chrome-192x192.png',
+  './android-chrome-512x512.png',
+  './apple-touch-icon.png',
+  './favicon-16x16.png',
+  './favicon-32x32.png',
+  './favicon.ico',
+  'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css',
+  'https://cdn.jsdelivr.net/npm/sweetalert2@11',
   './favicon.ico',
   './android-chrome-192x192.png',
   './android-chrome-512x512.png',

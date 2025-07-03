@@ -428,4 +428,112 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// Toggle theme function
+// Handle splash screen
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const splashScreen = document.getElementById('splash-screen');
+        splashScreen.classList.add('fade-out');
+        setTimeout(() => {
+            splashScreen.style.display = 'none';
+        }, 500);
+    }, 2000);
+});
+
+// PWA Installation
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const installBanner = document.getElementById('install-banner');
+    installBanner.style.display = 'flex';
+});
+
+document.getElementById('install-button')?.addEventListener('click', async () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const result = await deferredPrompt.userChoice;
+        if (result.outcome === 'accepted') {
+            console.log('PWA installed');
+        }
+        deferredPrompt = null;
+        document.getElementById('install-banner').style.display = 'none';
+    }
+});
+
+document.getElementById('close-banner')?.addEventListener('click', () => {
+    document.getElementById('install-banner').style.display = 'none';
+});
+
+// Check for updates
+async function checkForUpdates() {
+    try {
+        const registration = await navigator.serviceWorker.ready;
+        await registration.update();
+    } catch (err) {
+        console.error('Error checking for updates:', err);
+    }
+}
+
+// Register for Push Notifications
+async function registerForPush() {
+    try {
+        if ('Notification' in window) {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                const registration = await navigator.serviceWorker.ready;
+                const subscription = await registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: 'YOUR_VAPID_PUBLIC_KEY' // Replace with your VAPID key
+                });
+                // Send subscription to your server
+                console.log('Push Notification Subscription:', subscription);
+            }
+        }
+    } catch (err) {
+        console.error('Error registering for push notifications:', err);
+    }
+}
+
+// Background Sync
+async function registerSync() {
+    try {
+        const registration = await navigator.serviceWorker.ready;
+        await registration.sync.register('sync-expenses');
+    } catch (err) {
+        // Handle offline case
+        console.log('Background sync failed, will retry when online');
+    }
+}
+
+// Add to existing addProduct function
+const originalAddProduct = addProduct;
+window.addProduct = async function() {
+    originalAddProduct();
+    await registerSync();
+};
+
+// Check for app updates every hour
+setInterval(checkForUpdates, 3600000);
+
+// Register for push notifications when the page loads
+if ('serviceWorker' in navigator && 'Notification' in window) {
+    registerForPush();
+}
+
+// Add offline detection
+window.addEventListener('online', () => {
+    Toast.fire({
+        icon: 'success',
+        title: 'Back online! All changes will be synced.'
+    });
+    registerSync();
+});
+
+window.addEventListener('offline', () => {
+    Toast.fire({
+        icon: 'warning',
+        title: 'You are offline. Changes will be saved locally.'
+    });
+});
+
+
