@@ -429,16 +429,22 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // Splash screen logic
     const splashScreen = document.getElementById('splash-screen');
+    const loadingBar = document.querySelector('.loading-progress');
     if (isStandalone()) {
-        // Show splash for 2s with fade out
-        setTimeout(() => {
-            if (splashScreen) {
+        if (splashScreen && loadingBar) {
+            splashScreen.style.display = 'flex';
+            loadingBar.style.width = '0%';
+            loadingBar.style.transition = 'width 1.8s cubic-bezier(.4,0,.2,1)';
+            setTimeout(() => {
+                loadingBar.style.width = '100%';
+            }, 100); // Start animation
+            setTimeout(() => {
                 splashScreen.classList.add('fade-out');
                 setTimeout(() => {
                     splashScreen.style.display = 'none';
                 }, 500);
-            }
-        }, 2000);
+            }, 2000); // Show splash for 2s
+        }
     } else {
         // Hide splash immediately in browser
         if (splashScreen) splashScreen.style.display = 'none';
