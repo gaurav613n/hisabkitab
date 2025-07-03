@@ -428,31 +428,27 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// Handle splash screen only in standalone mode
-function isStandalone() {
-    return (
-        window.matchMedia('(display-mode: standalone)').matches ||
-        window.navigator.standalone === true
-    );
+// Splash screen with loading bar for all launches
+function showSplashScreenWithLoading() {
+    const splashScreen = document.getElementById('splash-screen');
+    const loadingBar = document.querySelector('.loading-progress');
+    if (splashScreen && loadingBar) {
+        splashScreen.style.display = 'flex';
+        loadingBar.style.width = '0%';
+        loadingBar.style.transition = 'width 1.8s cubic-bezier(.4,0,.2,1)';
+        setTimeout(() => {
+            loadingBar.style.width = '100%';
+        }, 100); // Start animation
+        setTimeout(() => {
+            splashScreen.classList.add('fade-out');
+            setTimeout(() => {
+                splashScreen.style.display = 'none';
+            }, 500);
+        }, 5000); // Show splash for 2s
+    }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    if (isStandalone()) {
-        setTimeout(() => {
-            const splashScreen = document.getElementById('splash-screen');
-            if (splashScreen) {
-                splashScreen.classList.add('fade-out');
-                setTimeout(() => {
-                    splashScreen.style.display = 'none';
-                }, 500);
-            }
-        }, 2000);
-    } else {
-        // Hide splash screen immediately in browser
-        const splashScreen = document.getElementById('splash-screen');
-        if (splashScreen) splashScreen.style.display = 'none';
-    }
-});
+document.addEventListener('DOMContentLoaded', showSplashScreenWithLoading);
 
 // PWA Installation
 let deferredPrompt;
