@@ -426,17 +426,8 @@ window.addEventListener("DOMContentLoaded", () => {
         });
         localStorage.setItem("lastWelcomeTime", currentTime.toString());
     }
-});
 
-// Show splash screen only in standalone (PWA) mode
-function isStandalone() {
-    return (
-        window.matchMedia('(display-mode: standalone)').matches ||
-        window.navigator.standalone === true
-    );
-}
-
-document.addEventListener('DOMContentLoaded', () => {
+    // Splash screen logic
     const splashScreen = document.getElementById('splash-screen');
     if (isStandalone()) {
         // Show splash for 2s with fade out
@@ -453,5 +444,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (splashScreen) splashScreen.style.display = 'none';
     }
 });
+
+// Show splash screen only in standalone (PWA) mode
+function isStandalone() {
+    return (
+        window.matchMedia('(display-mode: standalone)').matches ||
+        window.navigator.standalone === true
+    );
+}
 
 
