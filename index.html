@@ -1,105 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#5cb85c" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#1a472a" media="(prefers-color-scheme: dark)" />
-  <meta name="description" content="Track your expenses smartly with LedgerPro" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>LedgerPro - Smart Finance Tracker</title>
-  <link rel="stylesheet" href="/styles.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-  <link rel="manifest" href="/manifest.json" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(() => console.log('Service Worker registered'))
-      .catch(err => console.error('Service Worker registration failed:', err));
-  }
-</script>
-</head>
-<body>
-  <!-- Splash Screen -->
-  <div id="splash-screen" class="splash-screen">
-    <div class="splash-content">
-      <div class="logo-container">
-        <img src="/android-chrome-192x192.png" alt="LedgerPro Logo" class="splash-logo" />
-      </div>
-      <div class="loading-bar">
-        <div class="loading-progress"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Main Content -->
-  <div class="container">
-    <header class="top-header">
-      <h1>LedgerPro</h1>
-      <span id="balanceDisplay">Balance: ₹0.00</span>
-    </header>
-
-    <section class="input-section">
-      <input type="text" id="productName" placeholder="Product Name" />
-      <input type="number" id="productPrice" placeholder="Product Price" />
-      <button onclick="addProduct()">
-        <span>Add Product</span>
-      </button>
-    </section>
-
-    <h2>Product Purchase History</h2>
-    <div class="table-wrapper">
-      <table id="purchaseHistory">
-        <thead>
-          <tr>
-            <th>Product Name</th>
-            <th>Price</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-
-    <div class="action-buttons">
-      <button id="totalBtn">
-        <span>Total</span>
-      </button>
-      <button onclick="deleteAll()" class="delete-btn">
-        <span>Delete All</span>
-      </button>
-      <button onclick="deleteBalance()">
-        <span>Delete Balance</span>
-      </button>
-      <button onclick="addBalance()">
-        <span>Add Balance</span>
-      </button>
-      <button onclick="downloadPDF()">
-        <span>Download PDF</span>
-      </button>
-</div>
-  </div>
-
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <!-- PDF generation scripts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-  <!-- Initialize fonts for PDF -->
-  <script>
-    pdfMake.fonts = {
-      Roboto: {
-        normal: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Regular.ttf',
-        bold: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Medium.ttf',
-        italics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Italic.ttf',
-        bolditalics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-MediumItalic.ttf'
-      }
-    };
-  </script>
-  <script src="script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
