@@ -1,0 +1,53 @@
+{
+    "name": "LedgerPro - Smart Finance Tracker",
+    "short_name": "LedgerPro",
+    "description": "Track your expenses smartly with LedgerPro",
+    "icons": [
+      {
+        "src": "/android-chrome-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "/android-chrome-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any maskable"
+      }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#ffffff",
+    "theme_color": "#5cb85c",
+    "categories": ["finance", "productivity"],
+    "display_override": ["window-controls-overlay", "standalone"],
+    "prefer_related_applications": false,
+    "shortcuts": [
+      {
+        "name": "Add New Entry",
+        "short_name": "New Entry",
+        "description": "Add a new expense entry",
+        "url": "/?action=new",
+        "icons": [{ "src": "/android-chrome-192x192.png", "sizes": "192x192" }]
+      }
+    ],
+    "screenshots": [
+      {
+        "src": "/screenshot1.png",
+        "type": "image/png",
+        "sizes": "1080x1920",
+        "form_factor": "narrow"
+      }
+    ],
+    "edge_side_panel": {
+      "preferred_width": 400
+    },
+    "handle_links": "auto",
+    "launch_handler": {
+      "client_mode": ["focus-existing", "auto"]
+    },
+    "scope": "/",
+    "id": "ledgerpro-pwa"
+}
